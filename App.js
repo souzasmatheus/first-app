@@ -3,13 +3,15 @@ import {
   StyleSheet,
   Text,
   View,
-  SectionList
+  SectionList,
+  ActivityIndicator
 } from 'react-native';
 
 export default class MyList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
       sectionData: []
     };
   }
@@ -26,6 +28,7 @@ export default class MyList extends React.Component {
           });
         });
         this.setState({
+          isLoading: false,
           sectionData
         });
       })
@@ -35,6 +38,13 @@ export default class MyList extends React.Component {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.containerLoading}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <SectionList
@@ -54,6 +64,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 22
+  },
+  containerLoading: {
+    flex: 1,
+    justifyContent: 'center'
   },
   sectionHeader: {
     paddingTop: 2,
